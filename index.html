@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Andrej — Portfolio</title>
+<meta name="description" content="Portfolio Andreja — video i kreativni radovi." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --bg-raised:#ffffff;
+    --text:#1d1d1f;
+    --text-soft:#6e6e73;
+    --accent:#0071e3;
+    --border:#d2d2d7;
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:70px;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  *,*::before,*::after{cursor:none;}
+  @media (pointer:coarse){ *,*::before,*::after{ cursor:auto!important; } .cursor-dot,.cursor-ring{ display:none; } }
+  .native-cursor,.native-cursor *{cursor:auto!important;}
+  .native-cursor .cursor-dot,.native-cursor .cursor-ring{display:none;}
+  .native-cursor .work-media iframe{pointer-events:auto;}
+  a{color:inherit;text-decoration:none;}
+  img,video{max-width:100%;display:block;}
+  .container{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* Cursor */
+  .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);}
+  .cursor-dot{width:6px;height:6px;background:#ffffff;mix-blend-mode:difference;}
+  .cursor-ring{width:32px;height:32px;border:1px solid rgba(255,255,255,0.85);transition:width .2s,height .2s,border-color .2s;mix-blend-mode:difference;}
+  a:hover ~ .cursor-ring, button:hover ~ .cursor-ring{width:46px;height:46px;border-color:var(--accent);}
+
+  /* Nav */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding-top:env(safe-area-inset-top,0px);
+    background:rgba(245,245,247,0.8);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s;
+  }
+  header.scrolled{border-color:var(--border);}
+  nav{display:flex;align-items:center;justify-content:space-between;height:52px;}
+  .logo-wrap{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;letter-spacing:-0.01em;}
+  .logo-avatar{
+    width:32px;height:32px;border-radius:50%;flex-shrink:0;
+    background:#e8e8ea;border:1.5px dashed var(--text-soft);
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.8rem;color:var(--text-soft);overflow:hidden;object-fit:cover;
+  }
+  /* Da ubaciš svoju sliku: zamijeni <span class="logo-avatar"> sa
+     <img class="logo-avatar" src="tvoja-slika.jpg" style="border:none;"> */
+  .nav-links{display:flex;align-items:center;gap:28px;font-size:0.92rem;color:var(--text-soft);}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--text);color:#fff;padding:8px 18px;border-radius:100px;
+    font-size:0.88rem;font-weight:500;
+  }
+  .nav-cta:hover{background:#8e8e93;}
+
+  /* Hero */
+  .hero{
+    min-height:auto;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:100px 24px 32px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem,7vw,5.2rem);
+    font-weight:700;letter-spacing:-0.03em;line-height:1.05;
+    max-width:900px;
+    animation:rise .8s ease both;
+  }
+  .hero p{
+    margin-top:22px;font-size:clamp(1.05rem,2vw,1.35rem);color:var(--text-soft);
+    max-width:560px;animation:rise .8s .12s ease both;
+  }
+  .hero-actions{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:rise .8s .22s ease both;}
+  .btn{padding:12px 26px;border-radius:100px;font-size:0.95rem;font-weight:500;transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .2s,border-color .2s;display:inline-block;}
+  .btn:hover{transform:translateY(-4px) scale(1.04);}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-secondary{background:var(--bg-raised);color:var(--text);border:1px solid var(--border);}
+  .btn-secondary:hover{border-color:var(--text-soft);}
+  @keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+  section{padding:100px 0;}
+  #radovi{padding-top:20px;}
+  .section-head{max-width:640px;margin-bottom:56px;}
+  .section-head span{display:block;color:var(--accent);font-weight:600;font-size:0.95rem;margin-bottom:8px;}
+  .section-head h2{font-size:clamp(1.9rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.02em;}
+  .section-head p{margin-top:14px;color:var(--text-soft);font-size:1.05rem;}
+
+  /* Portfolio grid */
+  .work-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,300px));gap:24px;justify-content:center;}
+  .work-card{
+    background:var(--bg-raised);border-radius:var(--radius);overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .work-media{
+    aspect-ratio:9/16;background:#000;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+    color:var(--text-soft);position:relative;overflow:hidden;cursor:pointer;
+  }
+  .work-media iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;pointer-events:none;}
+  /* Radovi su embed-ovani YouTube Shorts (vidi .yt-video u markupu i JS na dnu stranice) */
+  .work-media .plus{
+    width:44px;height:44px;border-radius:50%;border:1.5px dashed var(--text-soft);
+    display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--text-soft);
+  }
+  .work-media span{font-size:0.85rem;}
+  .work-info{padding:18px 20px 22px;}
+  .work-info h3{font-size:1.05rem;font-weight:600;}
+  .work-info p{color:var(--text-soft);font-size:0.9rem;margin-top:4px;}
+
+  /* About */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .about-photo{
+    aspect-ratio:1;border-radius:var(--radius);background:#e8e8ea;
+    display:flex;align-items:center;justify-content:center;color:var(--text-soft);
+    border:1.5px dashed var(--border);font-size:0.9rem;
+    box-shadow:0 18px 40px rgba(0,0,0,0.22);
+  }
+  .about-text p{color:var(--text-soft);font-size:1.05rem;margin-bottom:16px;}
+  @media (max-width:760px){.about{grid-template-columns:1fr;}}
+
+  /* Contact */
+  .contact{background:#2c2c2e;color:#fff;border-radius:28px;margin:0 24px;padding:70px 40px;text-align:center;}
+  .contact h2{font-size:clamp(1.9rem,4vw,2.6rem);font-weight:700;letter-spacing:-0.02em;}
+  .contact p{color:#a1a1a6;margin-top:14px;font-size:1.05rem;}
+  .contact-actions{margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .contact .btn-primary{background:var(--accent);}
+  .contact .btn-secondary{background:transparent;border:1px solid #48484a;color:#fff;}
+
+  /* Radovi — ista tamna pozadina kao Kontakt; Početna i O meni ostaju off-white */
+  #radovi{background:var(--text);}
+  #radovi .section-head span{color:#4da3ff;}
+  #radovi .section-head h2{color:#fff;}
+  #radovi .section-head p{color:#a1a1a6;}
+  #radovi .work-card{background:#2c2c2e;border-color:rgba(255,255,255,0.08);}
+  #radovi .work-media{background:#000;}
+  #radovi .work-info h3{color:#fff;}
+  #radovi .work-info p{color:#a1a1a6;}
+
+  footer{padding:50px 24px;text-align:center;color:var(--text-soft);font-size:0.85rem;}
+
+  /* WhatsApp float */
+  .whatsapp-float{
+    position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));right:24px;z-index:200;
+    width:56px;height:56px;border-radius:50%;background:#25D366;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,0.18);transition:transform .2s;
+  }
+  .whatsapp-float:hover{transform:scale(1.08);}
+  .whatsapp-float svg{width:28px;height:28px;fill:#fff;}
+
+  /* Responsive prilagodbe za manje ekrane */
+  @media (max-width:640px){
+    .container{padding:0 16px;}
+    nav{height:56px;}
+    .logo-wrap{font-size:0.98rem;gap:8px;}
+    .logo-avatar{width:28px;height:28px;font-size:0.75rem;}
+    .nav-links{gap:14px;font-size:0.85rem;}
+    .nav-cta{padding:7px 14px;font-size:0.82rem;}
+    .hero{padding:96px 20px 24px;min-height:auto;}
+    .hero-actions{gap:10px;}
+    .btn{padding:11px 20px;font-size:0.9rem;}
+    section{padding:64px 0;}
+    #radovi{padding-top:12px;}
+    .section-head{margin-bottom:36px;}
+    .work-grid{gap:16px;}
+    .contact{margin:0 16px;padding:48px 22px;border-radius:22px;}
+    .contact-actions{gap:10px;}
+    footer{padding:36px 20px;}
+    .whatsapp-float{width:50px;height:50px;bottom:calc(18px + env(safe-area-inset-bottom,0px));right:18px;}
+    .whatsapp-float svg{width:24px;height:24px;}
+  }
+  @media (max-width:380px){
+    .nav-links{gap:10px;font-size:0.78rem;}
+    .nav-cta{padding:6px 12px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<header id="mainHeader">
+  <nav class="container">
+    <a href="#top" class="logo-wrap">
+      <img src="profilna.png" class="logo-avatar" alt="Andrej">
+      Andrej
+    </a>
+    <div class="nav-links">
+      <a href="#radovi">Radovi</a>
+      <a href="#o-meni">O meni</a>
+      <a href="#kontakt" class="nav-cta">Kontakt</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <h1>Andrej Vucelja</h1>
+  <p>Video Editing  |   Color Grading  |  Visual Effects  </p>
+  <div class="hero-actions">
+    <a href="#radovi" class="btn btn-primary">Pogledaj radove</a>
+    <a href="#kontakt" class="btn btn-secondary">Kontaktiraj me</a>
+  </div>
+</section>
+
+<section id="radovi">
+  <div class="container">
+    <div class="section-head">
+      <span>Radovi</span>
+      <h2>Odabrani projekti</h2>
+      <p>Radovi nastali kroz različite projekte i ideje.</p>
+    </div>
+    <div class="work-grid">
+      <div class="work-card">
+        <div class="work-media" data-video-id="Wp7GNMZuwWE" onclick="enterVideoFullscreen(this)">
+          <iframe src="https://www.youtube-nocookie.com/embed/Wp7GNMZuwWE?autoplay=1&mute=1&loop=1&playlist=Wp7GNMZuwWE&controls=0&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3" title="Reklama" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy" frameborder="0" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <div class="work-info"><h3>Reklama</h3><p>Promotivni video sa fokusom da privuče pažnju i efektno predstavi proizvod.
+</p></div>
+      </div>
+      <div class="work-card">
+        <div class="work-media" data-video-id="QfOEb3drejQ" onclick="enterVideoFullscreen(this)">
+          <iframe src="https://www.youtube-nocookie.com/embed/QfOEb3drejQ?autoplay=1&mute=1&loop=1&playlist=QfOEb3drejQ&controls=0&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3" title="Podcast" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy" frameborder="0" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <div class="work-info"><h3>Podcast</h3><p>UGC video sa prirodnim i autentičnim stilom i fokusom na jasno predstavljanje proizvoda i privlačenje pažnje publike.
+</p></div>
+      </div>
+      <div class="work-card">
+        <div class="work-media" data-video-id="fYEhFl007j8" onclick="enterVideoFullscreen(this)">
+          <iframe src="https://www.youtube-nocookie.com/embed/fYEhFl007j8?autoplay=1&mute=1&loop=1&playlist=fYEhFl007j8&controls=0&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3" title="UGC" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy" frameborder="0" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <div class="work-info"><h3>UGC</h3><p>UGC video sa prirodnim i autentičnim stilom, dinamičnom montažom i fokusom na jasno predstavljanje proizvoda i privlačenje pažnje publike.
+</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="o-meni">
+  <div class="container about">
+    <div class="about-photo"><img src="ja.jpeg" alt="Andrej"></div>
+    <div class="about-text">
+      <div class="section-head" style="margin-bottom:20px;">
+        <span>O meni</span>
+        <h2>Par riječi o meni</h2>
+      </div>
+      <p>Moje ime je Andrej, bavim se fotografisanjem i video editingom, završio sam informatičku gimnaziju u Prnjavoru i trenutno sam student na BLC-u u Banja Luci, smijer inženjer informacionih tehnologija.</p>
+<p>Cilj mi je pomoći ostalim kreatorima da dosegnu svoje ciljeve, uz vaš materijal ja stvaram gotovu stvar.</p>
+<p>Kontaktirajte me preko linkova ispod!</p>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <div class="contact">
+    <h2>Spreman za novi projekat?</h2>
+    <p>Piši za saradnju.</p>
+    <div class="contact-actions">
+      <a href="mailto:vuceljaofficial@gmail.com" class="btn btn-primary">Pošalji email</a>
+      <a href="https://wa.me/38766779255" target="_blank" rel="noopener" class="btn btn-secondary">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Andrej. Sva prava zadržana.</footer>
+
+<a class="whatsapp-float" href="https://wa.me/38766779255" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+<script>
+  const dot=document.getElementById('cursorDot'), ring=document.getElementById('cursorRing');
+  let rx=0,ry=0,dx=0,dy=0;
+  document.addEventListener('mousemove',e=>{dx=e.clientX;dy=e.clientY;dot.style.left=dx+'px';dot.style.top=dy+'px';});
+  (function loop(){rx+=(dx-rx)*0.15;ry+=(dy-ry)*0.15;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+  const header=document.getElementById('mainHeader');
+  window.addEventListener('scroll',()=>header.classList.toggle('scrolled',window.scrollY>20));
+
+  // --- YouTube Shorts u dijelu "Radovi": tiho u pozadini, klik = fullscreen + zvuk ---
+  function buildEmbedUrl(videoId, muted, controls){
+    return "https://www.youtube-nocookie.com/embed/" + videoId +
+      "?autoplay=1&mute=" + (muted?1:0) +
+      "&loop=1&playlist=" + videoId +
+      "&controls=" + (controls?1:0) +
+      "&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3";
+  }
+
+  function enterVideoFullscreen(container){
+    var videoId = container.dataset.videoId;
+    var iframe = container.querySelector('iframe');
+    iframe.src = buildEmbedUrl(videoId, false, true);
+    var req = iframe.requestFullscreen || iframe.webkitRequestFullscreen || iframe.mozRequestFullScreen || iframe.msRequestFullscreen;
+    if(req){ req.call(iframe); }
+  }
+
+  function handleFsChange(){
+    var fsEl = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+    document.documentElement.classList.toggle('native-cursor', !!fsEl);
+    document.querySelectorAll('.work-media').forEach(function(container){
+      var iframe = container.querySelector('iframe');
+      if(iframe !== fsEl && iframe.src.indexOf('mute=0') !== -1){
+        var videoId = container.dataset.videoId;
+        iframe.src = buildEmbedUrl(videoId, true, false);
+      }
+    });
+  }
+  document.addEventListener('fullscreenchange', handleFsChange);
+  document.addEventListener('webkitfullscreenchange', handleFsChange);
+  document.addEventListener('mozfullscreenchange', handleFsChange);
+</script>
+</body>
+</html>
